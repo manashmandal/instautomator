@@ -9,7 +9,7 @@
 7. Use cookie persistency for efficient login
 8. Graceful shutdown
 9. Handle login so that the account doesn't get banned
-
+10. Add caching layer and deduplicate mechanism
 
 
 ### Proposed Architecture 
