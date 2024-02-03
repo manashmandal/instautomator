@@ -5,7 +5,6 @@ export async function isViewStoryPrompted(page) {
   const elements = await page.$$(selectors.storyPageButtonsSelector);
 
   for (const element of elements) {
-    // Perform actions with each element, e.g., get the text content
     const text = await page.evaluate((el) => el.textContent, element);
 
     if (text.includes("View")) {
@@ -43,6 +42,15 @@ async function clickOnCenterToSeePost(page) {
   }
 
   return foundPostUrl;
+}
+
+export async function takeExistingStorySnapshot(page) {}
+
+export async function takePostOfStorySnapshotFromUrl(url, puppet) {
+  const page = await puppet.newPage();
+  await page.goto(url);
+  await sleep(2000);
+  await page.close();
 }
 
 export async function traverseStories(page) {

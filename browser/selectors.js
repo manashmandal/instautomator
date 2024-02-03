@@ -5,4 +5,5 @@ export default {
   storyPageButtonsSelector: "div[role='button']",
   storyNextButtonSelector: "svg[aria-label='Next']",
   storyPostUrlSelector: "a[href*='/p/']",
+  existingStoryDataSelector: "img[draggable='false']",
 };
