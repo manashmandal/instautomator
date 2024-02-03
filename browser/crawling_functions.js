@@ -75,6 +75,30 @@ export async function* traverseStories(page) {
   }
 }
 
-export async function runScraping() {
-  
+export async function runScraping(puppet, url) {
+  const page = await puppet.newPage();
+  await page.goto(url);
+
+  await sleep(config.defaultSleepTimeInMillis);
+
+  const out = await isViewStoryPrompted(page);
+
+  if (out.exists) {
+    await out.element.click();
+  }
+
+  await sleep(config.oneSecondSleepInMillis);
+
+  console.log({ url: page.url() });
+
+  try {
+    for await (const storyContent of traverseStories(page)) {
+      console.log(storyContent.slice(0, 100));
+    }
+  } catch (e) {
+    console.error(e);
+  }
+
+  await sleep(config.longSleepTimeInMillis);
+  await page.close();
 }

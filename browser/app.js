@@ -2,6 +2,7 @@ const faktory = require("faktory-worker");
 import { constructStoryUrl } from "./utils";
 import { authenticatePuppeteerBrowser, launchPuppet } from "./puppet";
 import config from "./config";
+import { runScraping } from "./crawling_functions";
 
 const TASK_SCRAPE_IG_STORIES = "ScrapeInstagramStories";
 
@@ -12,7 +13,7 @@ async function setupFaktoryWorker() {
 
   faktory.register(TASK_SCRAPE_IG_STORIES, async ({ igUserName, token }) => {
     const storyUrl = constructStoryUrl(igUserName);
-    
+    await runScraping(puppet, storyUrl);
   });
 }
 

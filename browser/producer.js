@@ -8,7 +8,10 @@ const TASK_SCRAPE_IG_STORIES = "ScrapeInstagramStories";
     port: config.factoryPort,
   });
   await client
-    .job(TASK_SCRAPE_IG_STORIES, { igUserName: "username", token: "token" })
+    .job(TASK_SCRAPE_IG_STORIES, {
+      igUserName: "thecumberverse",
+      token: "token",
+    })
     .push();
   await client.close(); // reuse client if possible! remember to disconnect!
 })().catch((e) => console.error(e));
