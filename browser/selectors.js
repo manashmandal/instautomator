@@ -4,4 +4,5 @@ export default {
   loginButtonSelector: "button[type='submit']",
   storyPageButtonsSelector: "div[role='button']",
   storyNextButtonSelector: "svg[aria-label='Next']",
+  storyPostUrlSelector: "a[href*='/p/']",
 };

@@ -24,19 +24,33 @@ async function clickOnCenterToSeePost(page) {
     };
   });
 
-  // Calculate the center of the viewport
   const centerX = width / 2;
   const centerY = height / 2;
 
-  // Perform a mouse click at the center of the viewport
   await page.mouse.click(centerX, centerY);
+
+  sleep(300);
+
+  const postUrls = await page.$$(selectors.storyPostUrlSelector);
+
+  let foundPostUrl;
+
+  for (const postUrl of postUrls) {
+    const url = await page.evaluate((el) => el.href, postUrl);
+    if (url.includes("/p/")) {
+      foundPostUrl = url;
+    }
+  }
+
+  return foundPostUrl;
 }
 
 export async function traverseStories(page) {
   while (page.url().includes("stories")) {
     await page.click(selectors.storyNextButtonSelector);
     sleep(200);
-    await clickOnCenterToSeePost(page);
+    const url = await clickOnCenterToSeePost(page);
+    console.log({ url });
     sleep(1000);
   }
 }
