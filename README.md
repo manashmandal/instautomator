@@ -14,4 +14,4 @@
 
 ### Proposed Architecture 
 
-![architecture](./docs/images/proposed_architecture.png)
+![architecture](./docs/images/proposed_arch.png)
