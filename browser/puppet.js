@@ -9,6 +9,7 @@ export async function launchPuppet() {
   puppet = await puppeteer.launch({
     headless: false,
     slowMo: 5,
+    defaultViewport: null,
   });
   return puppet;
 }

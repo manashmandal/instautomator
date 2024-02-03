@@ -3,4 +3,5 @@ export default {
   passwordSelector: "input[name='password']",
   loginButtonSelector: "button[type='submit']",
   storyPageButtonsSelector: "div[role='button']",
+  storyNextButtonSelector: "svg[aria-label='Next']",
 };

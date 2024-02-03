@@ -2,7 +2,7 @@ import { launchPuppet } from "./puppet";
 import selectors from "./selectors";
 import credentials from "./credentials";
 import { sleep } from "./utils";
-import { isViewStoryPrompted } from "./crawling_functions";
+import { isViewStoryPrompted, traverseStories } from "./crawling_functions";
 
 (async () => {
   const browser = await launchPuppet();
@@ -36,6 +36,13 @@ import { isViewStoryPrompted } from "./crawling_functions";
   if (out.exists) {
     await out.element.click();
   }
+
+  await sleep(1000);
+
+  console.log({ url: page.url() });
+
+  // await page.click(selectors.storyNextButtonSelector);
+  await traverseStories(page);
 
   await sleep(5000);
   await page.close();
