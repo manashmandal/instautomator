@@ -42,7 +42,9 @@ import { isViewStoryPrompted, traverseStories } from "./crawling_functions";
   console.log({ url: page.url() });
 
   // await page.click(selectors.storyNextButtonSelector);
-  await traverseStories(page);
+  for await (const storyContent of traverseStories(page)) {
+    console.log(storyContent);
+  }
 
   await sleep(5000);
   await page.close();
