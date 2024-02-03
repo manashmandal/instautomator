@@ -2,6 +2,7 @@ import { launchPuppet } from "./puppet";
 import selectors from "./selectors";
 import credentials from "./credentials";
 import { sleep } from "./utils";
+import { isViewStoryPrompted } from "./crawling_functions";
 
 (async () => {
   const browser = await launchPuppet();
@@ -22,12 +23,18 @@ import { sleep } from "./utils";
 
   await sleep(2000);
 
-  const elements = await page.$$("div[role='button']");
+  // const elements = await page.$$(selectors.storyPageButtonsSelector);
 
-  for (const element of elements) {
-    // Perform actions with each element, e.g., get the text content
-    const text = await page.evaluate((el) => el.textContent, element);
-    console.log(text);
+  // for (const element of elements) {
+  //   // Perform actions with each element, e.g., get the text content
+  //   const text = await page.evaluate((el) => el.textContent, element);
+  //   console.log(text);
+  // }
+
+  const out = await isViewStoryPrompted(page);
+
+  if (out.exists) {
+    await out.element.click();
   }
 
   await sleep(5000);
