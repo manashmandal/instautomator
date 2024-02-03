@@ -292,3 +292,5 @@ dist
 .pnp.*
 
 credentials.js
+
+.DS_Store
