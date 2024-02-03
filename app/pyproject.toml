@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "app"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.12"
+amqp = "^5.2.0"
+celery = {extras = ["rabbitmq"], version = "^5.3.6"}
+pydantic = "^2.6.0"
+fastapi = "^0.109.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
