@@ -1,52 +1,37 @@
-import { launchPuppet } from "./puppet";
-import selectors from "./selectors";
-import credentials from "./credentials";
-import { sleep } from "./utils";
-import { isViewStoryPrompted, traverseStories } from "./crawling_functions";
+const faktory = require("faktory-worker");
+import { constructStoryUrl } from "./utils";
+import { authenticatePuppeteerBrowser, launchPuppet } from "./puppet";
+import config from "./config";
 
-(async () => {
-  const browser = await launchPuppet();
+const TASK_SCRAPE_IG_STORIES = "ScrapeInstagramStories";
 
-  const page = await browser.newPage();
+async function setupFaktoryWorker() {
+  console.log("Initializing resources or setting up connections...");
+  const puppet = await launchPuppet();
+  authenticatePuppeteerBrowser(puppet);
 
-  await page.goto("https://instagram.com");
-  await page.waitForSelector(selectors.usernameSelector);
-  await page.type(selectors.usernameSelector, credentials.email);
-  await page.type(selectors.passwordSelector, credentials.password);
-  await page.click(selectors.loginButtonSelector);
+  faktory.register(TASK_SCRAPE_IG_STORIES, async ({ igUserName, token }) => {
+    const storyUrl = constructStoryUrl(igUserName);
+    
+  });
+}
 
-  const url = "https://www.instagram.com/stories/thecumberverse/";
-  // await page.click("div[role='button']");
-  await sleep(3000);
+async function startWorker() {
+  await setupFaktoryWorker();
 
-  await page.goto(url);
+  // Starting the worker after all initialization is done
+  const worker = await faktory.work({
+    host: config.factoryUrl,
+    port: config.factoryPort,
+  });
+  console.log("Faktory worker started");
 
-  await sleep(2000);
+  // Graceful shutdown logic (optional)
+  process.on("SIGTERM", async () => {
+    console.log("Shutting down worker...");
+    await worker.stop();
+    console.log("Worker shutdown complete.");
+  });
+}
 
-  // const elements = await page.$$(selectors.storyPageButtonsSelector);
-
-  // for (const element of elements) {
-  //   // Perform actions with each element, e.g., get the text content
-  //   const text = await page.evaluate((el) => el.textContent, element);
-  //   console.log(text);
-  // }
-
-  const out = await isViewStoryPrompted(page);
-
-  if (out.exists) {
-    await out.element.click();
-  }
-
-  await sleep(1000);
-
-  console.log({ url: page.url() });
-
-  // await page.click(selectors.storyNextButtonSelector);
-  for await (const storyContent of traverseStories(page)) {
-    console.log(storyContent);
-  }
-
-  await sleep(5000);
-  await page.close();
-  await browser.close();
-})();
+startWorker().catch((err) => console.error(err));

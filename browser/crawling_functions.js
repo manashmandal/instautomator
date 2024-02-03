@@ -1,6 +1,7 @@
 import selectors from "./selectors";
 import { sleep } from "./utils";
 import { launchPuppet } from "./puppet";
+import config from "./config";
 
 export async function isViewStoryPrompted(page) {
   const elements = await page.$$(selectors.storyPageButtonsSelector);
@@ -29,7 +30,7 @@ async function clickOnCenterToSeePost(page) {
 
   await page.mouse.click(centerX, centerY);
 
-  sleep(300);
+  sleep(config.shortSleepTimeInMillis);
 
   const postUrls = await page.$$(selectors.storyPostUrlSelector);
 
@@ -54,7 +55,7 @@ export async function takePostOfStorySnapshotFromUrl(url) {
   let htmlContent;
   const page = await puppet.newPage();
   await page.goto(url);
-  await sleep(2000);
+  await sleep(config.defaultSleepTimeInMillis);
   htmlContent = await page.content();
   await page.close();
   return htmlContent;
@@ -63,14 +64,17 @@ export async function takePostOfStorySnapshotFromUrl(url) {
 export async function* traverseStories(page) {
   while (page.url().includes("stories")) {
     await page.click(selectors.storyNextButtonSelector);
-    sleep(200);
+    sleep(config.shortSleepTimeInMillis);
     const url = await clickOnCenterToSeePost(page);
-    console.log({ url });
     if (url !== undefined && url !== null) {
       yield await takePostOfStorySnapshotFromUrl(url);
     } else {
       yield await takeExistingStorySnapshot(page);
     }
-    sleep(1000);
+    sleep(config.oneSecondSleepInMillis);
   }
+}
+
+export async function runScraping() {
+  
 }

@@ -1,1 +1,1 @@
-{ "dependencies": { "faktory": "^4.5.1", "puppeteer": "^21.11.0" } }
+{ "dependencies": { "faktory": "^4.5.1", "faktory-worker": "^4.5.1", "puppeteer": "^21.11.0" } }
